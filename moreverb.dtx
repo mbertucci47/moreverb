@@ -36,7 +36,7 @@
 \ProvidesFile{moreverb.dtx}
 %</dtx>
 %<moreverb>\ProvidesPackage{moreverb}
-        [2008/06/03 v2.3a
+        [2025/08/14 v2.3b
 %<moreverb>    `more' verbatim facilities%
 %<*dtx>
                moreverb source file%
@@ -414,7 +414,9 @@
   \def\verbatim@processline{%
     \thelisting@line \global\advance\listing@line1
     \the\verbatim@line\par}%
-  \@verbatim\verbatim@start}
+  \@verbatim
+  \@setupverbvisiblespace\@vobeyspaces
+  \verbatim@start}
 %    \end{macrocode}
 %
 % Nobbut a bit of hassle in the name definitions for the end of the
