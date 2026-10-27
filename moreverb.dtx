@@ -2,7 +2,8 @@
 % \iffalse
 %
 % Copyright (C) 1997 2002 2008 2011 by
-%    Robin Fairbairns <rf10@cam.ac.uk>
+%    Robin Fairbairns
+% Copyright 2026 LaTeX Project
 %
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either
@@ -14,16 +15,13 @@
 %
 % This work has the LPPL maintenance status `maintained'.
 %
-% The current maintainer of this work is Robin Fairbairns.
+% The current maintainer of this work is the LaTeX Project.
 %
 % This work consists of the source files moreverb.dtx,
 %                                        moreverb.ins
 %                  and the derived files moreverb.sty,
 %                                        moreverb.pdf
 %
-% RCS information:
-%
-% $Id: moreverb.dtx,v 1.12 2011/04/18 19:03:28 rf10 Exp rf10 $
 %
 % \section{Initially: identify the package}
 %
@@ -36,7 +34,7 @@
 \ProvidesFile{moreverb.dtx}
 %</dtx>
 %<moreverb>\ProvidesPackage{moreverb}
-        [2025/08/14 v2.3b
+        [2026/10/26 v2.3b
 %<moreverb>    `more' verbatim facilities%
 %<*dtx>
                moreverb source file%
@@ -46,7 +44,9 @@
 % Code to compile the thing using LaTeX2e
 %
 %<*driver>
-\documentclass{ltxdoc}
+\DocumentMetadata{tagging=on,pdfstandard={UA-2,A-4f}}
+\documentclass{l3in2edoc}
+\usepackage{lua-unicode-math}
 %
 \setcounter{errorcontextlines}{999}
 %
@@ -61,12 +61,15 @@
 \DeclareRobustCommand\env[1]{\cs{begin\char`\{#1\char`\}}}
 %
 \begin{document}
- \title{The \textsf{moreverb} package\thanks{This file
+ \title{The \pkg{moreverb} package\thanks{This file
         has version number \fileversion, last
         revised \filedate}}
-    \author{Robin Fairbairns (\small\texttt{rf10@cam.ac.uk})\\
-            after\\
-            Angus Duggan, Rainer Sch\"opf and Victor Eijkhout}
+ \author{Robin Fairbairns\\
+         after\\
+         Angus Duggan, Rainer Sch\"opf and Victor Eijkhout\\[1ex]
+         Maintained by the \LaTeX{} Project\\
+         \normalsize
+         \url{https://github.com/LaTeX-Package-Repositories/herries-press}}
  \date{\the\year-\ifnum\month<10 0\fi\the\month
                 -\ifnum\day  <10 0\fi\the\day}
  \maketitle
@@ -77,11 +80,26 @@
 %
 % \fi
 %
-% \CheckSum{402}
+%\makeatletter
+%\def\@doc@describe#1#2{^^A
+%    \ifdoc@noprint\else
+%      \marginpar{\raggedleft
+%                 \strut
+%                  \label{doc/function//\expandafter\@gobble\string#2}^^A
+%                  \doc@providetarget
+%                 \@nameuse{PrintDescribe#1}{#2}}^^A
+%    \fi
+%    \ifdoc@noindex\else
+%      \@nameuse{Special#1Index}{#2}^^A
+%    \fi
+%  \@esphack
+%  \endgroup
+%  \ignorespaces}
+%\makeatother
 %
 % \section{This package}
 %
-% This package uses the facilities provide by the \textsf{verbatim}
+% This package uses the facilities provided by the \textsf{verbatim}
 % package in the \LaTeXe{} \emph{tools} distribution to provide a
 % number of things that were rejected as unnecessary in the
 % development of that package.  (Nevertheless, the tab-expansion code
@@ -95,6 +113,7 @@
 %   later re-input), and `boxed' verbatim.
 % \end{itemize}
 %
+% \mbox{} ^^A see https://github.com/latex3/tagging-project/issues/1671
 % \subsection{Tab expansion}
 %
 % The package enables you to specify the expected width of the
@@ -155,7 +174,7 @@
 % these do the usual |verbatim*| thing of outputting spaces as
 % `\verb*| |', but don't expand tabs.
 %
-% \DescribeMacro{listinginput}
+% \DescribeMacro{\listinginput}
 %
 % \cs{listinginput}\oarg{interval}\marg{start line}\marg{filename}
 % is a file input version of listing.  There is no `\star' form.
@@ -177,7 +196,7 @@
 %
 % \DescribeEnv{verbatimcmd}
 %
-% The |verbatimcmd| environment was provided by the \LaTeX2.09 and
+% The |verbatimcmd| environment was provided by  \LaTeX\,2.09 and
 % early \LaTeXe{} versions of this package.  However, its capabilities
 % are now provided by |alltt|, which is defined by the \textsf{alltt}
 % package, now part of the \LaTeX{} base distribution, and so
@@ -246,7 +265,7 @@
 \def\verbatimtabsize{8\relax}
 %    \end{macrocode}
 %
-% \begin{macro}{\@xobeytab}
+% \begin{macro}[int]{\@xobeytab}
 %
 % \cs{@xobeytab} puts enough spaces in to get us to the next nominal
 % tab stop
@@ -260,7 +279,7 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@vobeytabs}
+% \begin{macro}[int]{\@vobeytabs}
 % \cs{@vobeytabs} initialises use of \cs{@xobeytab}.  Needs to be
 % executed within a group, as mustn't be allowed to leak out into the
 % wide world.
@@ -273,7 +292,7 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\verbatim@tabexpand}
+% \begin{macro}[int]{\verbatim@tabexpand}
 % \cs{verbatim@tabexpand}\meta{body of line}\cs{@nil} processes every
 % character of a line by tail recursion, counting the characters and
 % juggling things when a tab is encountered.  (What used to be called
@@ -292,7 +311,7 @@
 %    \end{macrocode}
 %
 % We can safely put \cs{@xobeysp} into the token register, since it
-% does precisely what we need
+% does precisely what we need.
 %    \begin{macrocode}
       \toks@\expandafter{\the\toks@#1}%
       \advance\tab@position\m@ne
@@ -320,7 +339,7 @@
 %
 % `\star' versions of both environments are provided.
 %
-% \begin{macro}{\listing@line}
+% \begin{macro}[int]{\listing@line}
 % \cs{listing@line} holds the current line number; its default value
 % is 1, so one can merrily use |listingcont| throughout a document if
 % there's but one stream of verbatim text being written.
@@ -330,7 +349,7 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\listing@step}
+% \begin{macro}[int]{\listing@step}
 % \cs{listing@step} is another case where a counter used to be used,
 % to no very obvious utility, but using up a valuable count register.
 % Again, the value is modal; the trailing \cs{relax} is necessary.
@@ -366,16 +385,16 @@
   \fi}
 %    \end{macrocode}
 %
-% \begin{macro}{\listingoffset}
+% \begin{macro}[no-user-doc]{\listingoffset}
 % \cs{listingoffset} is the separation between the line number and the
-% actual line being listed; default value is \verb|1.5em|
+% actual line being listed; default value is \verb|1.5em|.
 %    \begin{macrocode}
 \providecommand\listingoffset{1.5em}
 %    \end{macrocode}
 % \end{macro}
 %
 % Define \cs{listing} simply to suck in parameters and then to use
-% \cs{listingcont}
+% \cs{listingcont}.
 %
 %    \begin{macrocode}
 \newcommand\listing[2][1]{%
@@ -429,7 +448,7 @@
 % \end{environment}
 % \end{environment}
 %
-% \begin{macro}{listinginput}
+% \begin{macro}{\listinginput}
 % \cs{listinginput}\oarg{interval}\marg{start line}\marg{filename}
 % is a file input version of listing.
 %
@@ -466,7 +485,7 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{verbatimcmd}
+% \begin{environment}{verbatimcmd}
 % \texttt{verbatimcmd} was a verbatim environment with the exception
 % of the escape and grouping characters \verb+\+, \verb+{+, \verb+}+.
 % This is (err) exactly the specification of the \texttt{alltt}
@@ -480,7 +499,7 @@
 }
 \let\endverbatimcmd\relax
 %    \end{macrocode}
-% \end{macro}
+% \end{environment}
 %
 % \begin{environment}{boxedverbatim}
 % \texttt{boxedverbatim} puts the contents of a verbatim environment
@@ -491,11 +510,11 @@
 % \noindent Bug fixes:
 % \begin{itemize}
 % \item David Carlisle 1995-12-28, dealing with spacing issues (iirc)
-% \item Moretn H\o gholm 2008-06-01, positioning of frame in lists
+% \item Morten H\o gholm 2008-06-01, positioning of frame in lists
 % \end{itemize}
 %
 % First, redefine `processline' to produce only a line as wide
-% as the natural width of the line
+% as the natural width of the line.
 %
 %    \begin{macrocode}
 \def\boxedverbatim{%
@@ -504,7 +523,7 @@
     \hsize=\wd0 \the\verbatim@line\par}}%
 %    \end{macrocode}
 %
-% Now save the verbatim code in a box
+% Now save the verbatim code in a box.
 %
 %    \begin{macrocode}
   \@minipagetrue           % DPC
@@ -549,7 +568,7 @@
 %    \end{macrocode}
 %
 % Process the optional argument of the |verbatimtab|, now that we have
-% protected ourselves from the dreaded \cs{par} tokens
+% protected ourselves from the dreaded \cs{par} tokens.
 %    \begin{macrocode}
 \newcommand\@verbatimtab[1][\verbatimtabsize]{%
   \do@verbatimtab{#1}{%
@@ -558,7 +577,7 @@
 %    \end{macrocode}
 % \end{environment}
 %
-% \begin{macro}{\do@verbatimtab}
+% \begin{macro}[int]{\do@verbatimtab}
 %
 % Prepare a tabbing environment; \verb+#1+ is the value of the tab
 % size (generally, originally, an optional argument), \verb+#2+ is the
@@ -616,8 +635,8 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\do@verbatimtabinput}
-% Written-out (tail recursion) loop for reading the file
+% \begin{macro}[int]{\do@verbatimtabinput}
+% Written-out (tail recursion) loop for reading the file:
 %    \begin{macrocode}
 \def\do@verbatimtabinput{%
   \read\verbatim@in@stream to \verbtab@line
@@ -637,18 +656,3 @@
 %
 \endinput
 %
-%% \CharacterTable
-%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
-%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
-%%   Digits        \0\1\2\3\4\5\6\7\8\9
-%%   Exclamation   \!     Double quote  \"     Hash (number) \#
-%%   Dollar        \$     Percent       \%     Ampersand     \&
-%%   Acute accent  \'     Left paren    \(     Right paren   \)
-%%   Asterisk      \*     Plus          \+     Comma         \,
-%%   Minus         \-     Point         \.     Solidus       \/
-%%   Colon         \:     Semicolon     \;     Less than     \<
-%%   Equals        \=     Greater than  \>     Question mark \?
-%%   Commercial at \@     Left bracket  \[     Backslash     \\
-%%   Right bracket \]     Circumflex    \^     Underscore    \_
-%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
-%%   Right brace   \}     Tilde         \~}
