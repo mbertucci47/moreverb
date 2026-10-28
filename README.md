@@ -4,7 +4,7 @@ The moreverb package is a miscellany of verbatim facilities,
 originally provided as a LaTeX 2.09 package.
 
 The present instance has been ported to current LaTeX (2e), tidied and
-mended in various ways by David Carlisle and Morten H\o gholm.
+mended in various ways by David Carlisle and Morten Høgholm.
 
 Some of the facilities of the original package are no longer provided
 in this package, since they duplicated those of the LaTeX required
