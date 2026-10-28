@@ -14,4 +14,3 @@ verbatim package (which this package loads) or the alltt package
 The package is distributed under the LPPL.
 
 Robin Fairbairns
-rf10@cam.ac.uk
